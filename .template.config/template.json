@@ -14,7 +14,7 @@
   "preferNameDirectory": true,
   "sources":[{
     "modifiers": [{
-      "exclude": [ ".vs/**"]
+      "exclude": [ ".vs/**", "README.md", "LICENSE"]
       }
     ]
   }]
