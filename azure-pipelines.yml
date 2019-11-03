@@ -1,4 +1,4 @@
-name: $(Year:yy).$(Month).$(DayOfMonth)$(Rev:.r)
+name: $(Date:yyyyMMdd)$(Rev:r)
 
 trigger:
 - master
@@ -42,13 +42,6 @@ steps:
     publishWebProjects: false
     modifyOutputPath: true
     zipAfterPublish: true
-
-- task: PublishTestResults@2
-  condition: succeededOrFailed()
-  inputs:
-    testRunner: VSTest
-    testResultsFiles: '**/*.trx'
-    failTaskOnFailedTests: true
 
 - task: PublishBuildArtifacts@1
   condition: succeeded()
