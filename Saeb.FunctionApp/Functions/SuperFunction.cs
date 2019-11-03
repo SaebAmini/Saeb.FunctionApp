@@ -6,20 +6,20 @@ using Saeb.FunctionApp.Domain;
 
 namespace Saeb.FunctionApp
 {
-    public class SuperFunction
-    {
-        readonly IHitchhikerGuideToTheGalaxy _hitchhikerGuideToTheGalaxy;
+	public class SuperFunction
+	{
+		readonly IHitchhikerGuideToTheGalaxy _hitchhikerGuideToTheGalaxy;
 
-        public SuperFunction(IHitchhikerGuideToTheGalaxy hitchhikerGuideToTheGalaxy)
-        {
-            _hitchhikerGuideToTheGalaxy = hitchhikerGuideToTheGalaxy;
-        }
+		public SuperFunction(IHitchhikerGuideToTheGalaxy hitchhikerGuideToTheGalaxy)
+		{
+			_hitchhikerGuideToTheGalaxy = hitchhikerGuideToTheGalaxy;
+		}
 
-        [FunctionName(nameof(AnswerToLifeTheUniverseAndEverything))]
-        public IActionResult AnswerToLifeTheUniverseAndEverything(
-            [HttpTrigger(AuthorizationLevel.Anonymous)] HttpRequest req)
-        {
-            return new OkObjectResult(_hitchhikerGuideToTheGalaxy.GetTheAnswerToLifeTheUniverseAndEverything());
-        }
-    }
+		[FunctionName(nameof(AnswerToLifeTheUniverseAndEverything))]
+		public IActionResult AnswerToLifeTheUniverseAndEverything(
+			[HttpTrigger(AuthorizationLevel.Anonymous)] HttpRequest req)
+		{
+			return new OkObjectResult(_hitchhikerGuideToTheGalaxy.GetTheAnswerToLifeTheUniverseAndEverything());
+		}
+	}
 }
