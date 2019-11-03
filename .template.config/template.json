@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Saeb Amini",
+  "classifications": [ "Function" ], 
+  "name": "FunctionApp",
+  "identity": "Saeb.FunctionApp",         
+  "groupIdentity":"Saeb.FunctionApp",
+  "shortName": "functionapp",
+  "tags": {
+    "language": "C#",
+    "type":"project"
+  },
+  "sourceName": "Saeb.FunctionApp",
+  "preferNameDirectory": true,
+  "sources":[{
+    "modifiers": [{
+      "exclude": [ ".vs/**"]
+      }
+    ]
+  }]
+}

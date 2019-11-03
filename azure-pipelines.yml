@@ -1,0 +1,54 @@
+name: $(Year:yy).$(Month).$(DayOfMonth)$(Rev:.r)
+
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  versionMajor: 1
+  versionMinor: 0
+  versionPatch: 0
+
+steps:
+- powershell: |
+    $mainVersion = "$(versionMajor).$(versionMinor).$(versionPatch)"
+    $commitId = "$(Build.SourceVersion)".Substring(0,7)
+    Write-Host "##vso[task.setvariable variable=mainVersion]$mainVersion"
+    Write-Host "##vso[task.setvariable variable=semanticVersion]$mainVersion+$(Build.BuildNumber).$commitId"
+    Write-Host "##vso[task.setvariable variable=assemblyVersion]$(versionMajor).0.0"
+  displayName: 'Set Version Variables'
+
+- powershell: |
+    Write-Host 'mainVersion: $(mainVersion)'
+    Write-Host 'semanticVersion: $(semanticVersion)'
+    Write-Host 'assemblyVersion: $(assemblyVersion)'
+  displayName: 'Print Version Variables'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Run Tests'
+  inputs:
+    command: test
+    arguments: '--configuration $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Publish App to ArtifactStagingDirectory'
+  inputs:
+    command: publish
+    arguments: '--configuration "$(buildConfiguration)" --output "$(Build.ArtifactStagingDirectory)" /p:AssemblyVersion="$(assemblyVersion)" /p:FileVersion="$(mainVersion)" /p:InformationalVersion="$(semanticVersion)" /p:Version="$(mainVersion)"'
+    projects: 'Saeb.FunctionApp/Saeb.FunctionApp.csproj'
+    publishWebProjects: false
+    modifyOutputPath: true
+    zipAfterPublish: true
+
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
+  inputs:
+    testRunner: VSTest
+    testResultsFiles: '**/*.trx'
+    failTaskOnFailedTests: true
+
+- task: PublishBuildArtifacts@1
+  condition: succeeded()
