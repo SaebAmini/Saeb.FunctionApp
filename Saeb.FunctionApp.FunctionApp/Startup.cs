@@ -35,6 +35,7 @@ namespace Saeb.FunctionApp
 			Configuration = new ConfigurationBuilder()
 				.SetBasePath(executionContextOptions.AppDirectory)
 				.AddJsonFile("appsettings.json")
+				.AddJsonFile("appsettings.Development.json", optional: true)
 				.AddEnvironmentVariables()
 				.Build();
 		}
